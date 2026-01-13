@@ -7,32 +7,40 @@
 
 // MUX
 
-#define TCA1_ADDR       0x70
-#define TCA2_ADDR       0x71
-#define TCA_RST         12
+#define TCA1_ADDR           0x70
+#define TCA2_ADDR           0x71
+#define TCA_RST             12
 
-// VL53L5CX
-#define SENSOR1_RST     13
-#define SENSOR1_ADDR    0x45
-#define SENSOR1_CHANNEL 0
+// VL53L5CX   
+#define SENSOR1_RST         13
+#define SENSOR1_ADDR        0x45
+#define SENSOR1_CHANNEL     0
 
-#define SENSOR2_RST     14
-#define SENSOR2_ADDR    0x46
-#define SENSOR2_CHANNEL 1
+#define SENSOR2_RST         14
+#define SENSOR2_ADDR        0x46
+#define SENSOR2_CHANNEL     1
 
-#define DEFAULT_RES     64
-#define DEFAULT_FREQ    15
+#define DEFAULT_RES         64
+#define DEFAULT_FREQ        15
 
-// VL53L4CD
-#define SENSOR3_SHUT    15
-#define SENSOR3_ADDR    0x47
-#define SENSOR3_CHANNEL 0
+// VL53L4CD   
+#define SENSOR3_SHUT        15
+#define SENSOR3_ADDR        0x47
+#define SENSOR3_CHANNEL     0
 
-#define SENSOR4_SHUT    18
-#define SENSOR4_ADDR    0x48
-#define SENSOR4_CHANNEL 1
+#define SENSOR4_SHUT        18 // 16 e 17 são reservados para o ESP
+#define SENSOR4_ADDR        0x48
+#define SENSOR4_CHANNEL     1
 
+/*
+#define SENSOR5_SHUT    19
+#define SENSOR5_ADDR    0x49
+#define SENSOR5_CHANNEL 2
 
+#define SENSOR6_SHUT    21
+#define SENSOR6_ADDR    0x50
+#define SENSOR6_CHANNEL 3
+*/
 
 
 // VL53L5CX
@@ -51,9 +59,21 @@ SensorConfig_VL53L5CX config_VL53L5CX[] = {
 VL53L4CD Sensor3(&Wire, SENSOR3_SHUT);
 VL53L4CD Sensor4(&Wire, SENSOR4_SHUT);
 
+/*
+
+VL53L4CD Sensor5(&Wire, SENSOR5_SHUT);
+VL53L4CD Sensor6(&Wire, SENSOR6_SHUT);
+
+*/
+
 SensorConfig_VL53L4CD config_VL53L4CD[] = {
     { &Sensor3, SENSOR3_SHUT, SENSOR3_CHANNEL, TCA2_ADDR, SENSOR3_ADDR },
-    { &Sensor4, SENSOR4_SHUT, SENSOR4_CHANNEL, TCA2_ADDR, SENSOR4_ADDR }
+    { &Sensor4, SENSOR4_SHUT, SENSOR4_CHANNEL, TCA2_ADDR, SENSOR4_ADDR }//,
+    /*
+    { &Sensor5, SENSOR5_SHUT, SENSOR5_CHANNEL, TCA2_ADDR, SENSOR5_ADDR },
+    { &Sensor6, SENSOR6_SHUT, SENSOR6_CHANNEL, TCA2_ADDR, SENSOR6_ADDR }
+    
+    */
 };
 
 
@@ -73,6 +93,8 @@ void setup() {
         InitSensor_VL53L4CD(cfg);
 
     Serial.println();
+
+    delay(1000);
 }
 
 

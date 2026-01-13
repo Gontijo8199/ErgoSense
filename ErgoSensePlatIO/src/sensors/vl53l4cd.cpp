@@ -17,10 +17,18 @@ void InitSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
 
     cfg.sensor->begin();
 
-    if (cfg.sensor->InitSensor(cfg.addr) != VL53L4CD_ERROR_NONE) {
+    uint8_t status = cfg.sensor->InitSensor(cfg.addr);
+
+    if (status != VL53L4CD_ERROR_NONE) {
+        delay(5);
+        status = cfg.sensor->InitSensor(cfg.addr);
+    }
+
+    if (status != VL53L4CD_ERROR_NONE) {
         Serial.println("ERR");
         return;
     }
+
 
     cfg.sensor->VL53L4CD_StartRanging();
 

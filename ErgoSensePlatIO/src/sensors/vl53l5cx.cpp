@@ -10,6 +10,7 @@ void InternalReset_L5CX(uint8_t rstPin) {
 }
 
 void InitSensor_VL53L5CX(SensorConfig_VL53L5CX &cfg, int defaultRes, int defaultFreq) {
+    
     Serial.print("[L5CX ");
     Serial.print(cfg.muxAddr, HEX);
     Serial.print(":");
