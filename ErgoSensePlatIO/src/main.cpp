@@ -5,6 +5,9 @@
 #include "sensors/vl53l5cx.h"
 #include "sensors/vl53l4cd.h"
 
+#include "database/firebase.h"
+#include "database/credentials.h"
+
 // MUX
 
 #define TCA1_ADDR           0x70
@@ -83,6 +86,32 @@ void setup() {
     Serial.begin(115200);
     Wire.begin();
     Wire.setClock(400000);
+
+    // firebase
+    Serial.println("Conectando WiFi...");
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("\nWiFi conectado!");
+    Serial.print("IP: ");
+    Serial.println(WiFi.localIP());
+
+    if (firebaseInit()) {
+        Serial.println("Firebase inicializado!");
+    } else {
+        Serial.println("Erro ao iniciar Firebase");
+    }
+
+    if (firebasePing()) {
+        Serial.println("PING Firebase OK");
+    } else {
+        Serial.print("Erro Firebase: ");
+        Serial.println(fbdo.errorReason());
+    }
 
     ResetMUX(TCA_RST);
 
