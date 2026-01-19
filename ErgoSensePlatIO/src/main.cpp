@@ -7,6 +7,9 @@
 
 #include "database/firebase.h"
 #include "database/credentials.h"
+#include "processing/sensor_processor.h"
+#include "database/firebase_queue.h"
+#include "utils/time_sync.h"
 
 // MUX
 
@@ -100,6 +103,8 @@ void setup() {
     Serial.print("IP: ");
     Serial.println(WiFi.localIP());
 
+    initTime();
+
     if (firebaseInit()) {
         Serial.println("Firebase inicializado!");
     } else {
@@ -124,15 +129,30 @@ void setup() {
     Serial.println();
 
     delay(1000);
+    
+   
 }
 
 
 void loop() {
-    for (auto &cfg : config_VL53L5CX)
-        ReadSensor_VL53L5CX(cfg);
 
-    for (auto &cfg : config_VL53L4CD)
-        ReadSensor_VL53L4CD(cfg);
+    VL53L5CX_Data d5;
+
+    for (auto &cfg : config_VL53L5CX) {
+        if (ReadSensor_VL53L5CX_Data(cfg, d5)) {
+            queueL5CX(d5);
+        }
+    }
+
+    VL53L4CD_Data d4;
+    for (auto &cfg : config_VL53L4CD) {
+        if (ReadSensor_VL53L4CD_Data(cfg, d4)) {
+            queueL4CD(d4);
+        }
+    }
+
+    processL4CDQueue();
+    processL5CXQueue();
 
     delay(200);
 }
