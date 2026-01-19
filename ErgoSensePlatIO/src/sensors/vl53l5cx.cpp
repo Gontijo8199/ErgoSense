@@ -1,4 +1,5 @@
 #include "vl53l5cx.h"
+#include "utils/time_sync.h"
 
 void InternalReset_L5CX(uint8_t rstPin) {
     pinMode(rstPin, OUTPUT);
@@ -46,7 +47,7 @@ void InitSensor_VL53L5CX(SensorConfig_VL53L5CX &cfg, int defaultRes, int default
     Serial.println(cfg.addr, HEX);
 }
 
-
+/*
 void ReadSensor_VL53L5CX(SensorConfig_VL53L5CX &cfg) {
     SelectChannel(cfg.muxAddr, cfg.muxChannel);
 
@@ -64,4 +65,28 @@ void ReadSensor_VL53L5CX(SensorConfig_VL53L5CX &cfg) {
         Serial.println();
     }
     Serial.println();
+}
+*/
+
+bool ReadSensor_VL53L5CX_Data(SensorConfig_VL53L5CX &cfg, VL53L5CX_Data &out) {
+
+    SelectChannel(cfg.muxAddr, cfg.muxChannel);
+
+    if (!cfg.sensor->isDataReady())
+        return false;
+
+    if (!cfg.sensor->getRangingData(cfg.data))
+        return false;
+
+    int w = cfg.width;
+
+    out.address = cfg.addr;
+    out.width = w;
+    out.timestamp = getEpoch();
+
+    for (int i = 0; i < w * w; i++) {
+        out.matrix[i] = cfg.data->distance_mm[i];
+    }
+
+    return true;
 }

@@ -1,4 +1,5 @@
 #include "vl53l4cd.h"
+#include "utils/time_sync.h"
 
 void InitSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
     Serial.print("[L4CD ");
@@ -36,6 +37,7 @@ void InitSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
     Serial.println(cfg.addr, HEX);
 }
 
+/*
 void ReadSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
     SelectChannel(cfg.muxAddr, cfg.muxChannel);
 
@@ -51,4 +53,32 @@ void ReadSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
 
     Serial.print("L4CD: ");
     Serial.println(result.distance_mm);
+}
+*/
+
+
+
+bool ReadSensor_VL53L4CD_Data(SensorConfig_VL53L4CD &cfg, VL53L4CD_Data &out) {
+    SelectChannel(cfg.muxAddr, cfg.muxChannel);
+
+    uint8_t ready;
+    VL53L4CD_Result_t result;
+
+    cfg.sensor->VL53L4CD_CheckForDataReady(&ready);
+    if (!ready)
+        return false;
+
+    cfg.sensor->VL53L4CD_GetResult(&result);
+    cfg.sensor->VL53L4CD_ClearInterrupt();
+
+    out.address = cfg.addr;
+    out.distance_mm = result.distance_mm;
+    out.timestamp = getEpoch(); 
+
+    Serial.print("[QUEUE] Recebendo L4CD addr: 0x");
+    Serial.print(out.address, HEX);
+    //Serial.print(" | Dist: ");
+    //Serial.println(out.distance_mm);
+
+    return true;
 }

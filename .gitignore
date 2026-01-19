@@ -47,6 +47,4 @@
 .vscode/launch.json
 .vscode/ipch/
 
-ErgoSensePlatIO/src/database/credentials.h
-ErgoSensePlatIO/src/database/firebase.cpp
-ErgoSensePlatIO/src/database/firebase.h
+ErgoSensePlatIO/src/database/*
