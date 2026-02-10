@@ -18,8 +18,8 @@ void queueL4CD(const VL53L4CD_Data &data) {
 
 void queueL5CX(const VL53L5CX_Data &data) {
 
-    Serial.print("[QUEUE] Recebendo L5CX addr: 0x");
-    Serial.println(data.address, HEX);
+    //Serial.print("[QUEUE] Recebendo L5CX addr: 0x");
+    //Serial.println(data.address, HEX);
 
     if (queue5.count >= L5CX_QUEUE_SIZE) {
         Serial.println("Fila L5CX cheia - descartando dado");
@@ -37,8 +37,8 @@ void processL4CDQueue() {
 
         VL53L4CD_Data data = queue.buffer[queue.head];
 
-        Serial.print("[PROCESS] Enviando L4CD addr: 0x");
-        Serial.println(data.address, HEX);
+        //Serial.print("[PROCESS] Enviando L4CD addr: 0x");
+        //Serial.println(data.address, HEX);
 
         sendL4CDtoFirebase(data);
 
@@ -58,8 +58,8 @@ void processL5CXQueue() {
 
         VL53L5CX_Data data = queue5.buffer[queue5.head];
 
-        Serial.print("[PROCESS] Enviando L5CX addr: 0x");
-        Serial.println(data.address, HEX);
+        //Serial.print("[PROCESS] Enviando L5CX addr: 0x");
+        //Serial.println(data.address, HEX);
 
         bool ok = sendL5CXtoFirebase(data);
 

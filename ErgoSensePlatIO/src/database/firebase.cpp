@@ -11,7 +11,7 @@ bool firebaseInit() {
     config.api_key = API_KEY;
     config.database_url = DATABASE_URL;
 
-    // login anonimo
+    // Login anônimo
     if (!Firebase.signUp(&config, &auth, "", "")) {
         Serial.print("Signup failed: ");
         Serial.println(config.signer.signupError.message.c_str());
@@ -22,7 +22,7 @@ bool firebaseInit() {
     Firebase.reconnectWiFi(true);
 
     unsigned long start = millis();
-    while (!Firebase.ready() && millis() - start < 8000) {
+    while (!Firebase.ready() && millis() - start < 10000) {
         Serial.print(".");
         delay(300);
     }
@@ -30,7 +30,6 @@ bool firebaseInit() {
 
     if (!Firebase.ready()) {
         Serial.println("Firebase NÃO ficou pronto");
-        Serial.println(fbdo.errorReason());
         return false;
     }
 
@@ -42,7 +41,14 @@ bool firebaseInit() {
 
 
 bool firebasePing() {
-    return Firebase.RTDB.setBool(&fbdo, "/ping", true);
+    bool ok = Firebase.RTDB.setBool(&fbdo, "/devices/ping", true);
+
+    if (!ok) {
+        Serial.print("Erro: ");
+        Serial.println(fbdo.errorReason());
+    }
+
+    return ok;
 }
 
 

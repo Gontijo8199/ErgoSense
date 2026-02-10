@@ -4,8 +4,8 @@
 #include "../sensors/vl53l4cd.h"
 #include "../sensors/vl53l5cx.h"
 
-#define L4CD_QUEUE_SIZE 20
-#define L5CX_QUEUE_SIZE 30
+#define L4CD_QUEUE_SIZE 40
+#define L5CX_QUEUE_SIZE 60
 
 struct L4CD_Queue {
     VL53L4CD_Data buffer[L4CD_QUEUE_SIZE];

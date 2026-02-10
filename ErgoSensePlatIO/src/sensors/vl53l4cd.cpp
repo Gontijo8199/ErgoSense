@@ -75,8 +75,8 @@ bool ReadSensor_VL53L4CD_Data(SensorConfig_VL53L4CD &cfg, VL53L4CD_Data &out) {
     out.distance_mm = result.distance_mm;
     out.timestamp = getEpoch(); 
 
-    Serial.print("[QUEUE] Recebendo L4CD addr: 0x");
-    Serial.print(out.address, HEX);
+    //Serial.print("[QUEUE] Recebendo L4CD addr: 0x");
+    //Serial.print(out.address, HEX);
     //Serial.print(" | Dist: ");
     //Serial.println(out.distance_mm);
 

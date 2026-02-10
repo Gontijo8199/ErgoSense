@@ -4,11 +4,15 @@
 
 void processL4CD(const VL53L4CD_Data &data) {
 
+
+    Serial.println();
     Serial.print("[L4CD 0x");
     Serial.print(data.address, HEX);
     Serial.print("] ");
     Serial.print(data.distance_mm);
-    Serial.println(" mm");
+    Serial.print(" mm");
+    Serial.println();
+
 
     queueL4CD(data);
 }
@@ -16,9 +20,11 @@ void processL4CD(const VL53L4CD_Data &data) {
 
 void processL5CX(const VL53L5CX_Data &data) {
 
+    Serial.println();
     Serial.print("[L5CX 0x");
     Serial.print(data.address, HEX);
-    Serial.println("]");
+    Serial.print("]");
+    Serial.println();
 
     int w = data.width;
 
@@ -29,6 +35,7 @@ void processL5CX(const VL53L5CX_Data &data) {
         }
         Serial.println();
     }
+
     Serial.println();
 
     queueL5CX(data);

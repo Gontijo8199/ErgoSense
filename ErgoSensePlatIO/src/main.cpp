@@ -38,7 +38,6 @@
 #define SENSOR4_ADDR        0x48
 #define SENSOR4_CHANNEL     1
 
-/*
 #define SENSOR5_SHUT    19
 #define SENSOR5_ADDR    0x49
 #define SENSOR5_CHANNEL 2
@@ -46,7 +45,7 @@
 #define SENSOR6_SHUT    21
 #define SENSOR6_ADDR    0x50
 #define SENSOR6_CHANNEL 3
-*/
+
 
 
 // VL53L5CX
@@ -64,22 +63,16 @@ SensorConfig_VL53L5CX config_VL53L5CX[] = {
 // VL53L4CD
 VL53L4CD Sensor3(&Wire, SENSOR3_SHUT);
 VL53L4CD Sensor4(&Wire, SENSOR4_SHUT);
-
-/*
-
 VL53L4CD Sensor5(&Wire, SENSOR5_SHUT);
 VL53L4CD Sensor6(&Wire, SENSOR6_SHUT);
 
-*/
+
 
 SensorConfig_VL53L4CD config_VL53L4CD[] = {
     { &Sensor3, SENSOR3_SHUT, SENSOR3_CHANNEL, TCA2_ADDR, SENSOR3_ADDR },
-    { &Sensor4, SENSOR4_SHUT, SENSOR4_CHANNEL, TCA2_ADDR, SENSOR4_ADDR }//,
-    /*
+    { &Sensor4, SENSOR4_SHUT, SENSOR4_CHANNEL, TCA2_ADDR, SENSOR4_ADDR },
     { &Sensor5, SENSOR5_SHUT, SENSOR5_CHANNEL, TCA2_ADDR, SENSOR5_ADDR },
     { &Sensor6, SENSOR6_SHUT, SENSOR6_CHANNEL, TCA2_ADDR, SENSOR6_ADDR }
-    
-    */
 };
 
 
@@ -140,14 +133,17 @@ void loop() {
 
     for (auto &cfg : config_VL53L5CX) {
         if (ReadSensor_VL53L5CX_Data(cfg, d5)) {
-            queueL5CX(d5);
+            processL5CX(d5);
+            // queueL5CX(d5);
         }
     }
 
     VL53L4CD_Data d4;
+    
     for (auto &cfg : config_VL53L4CD) {
         if (ReadSensor_VL53L4CD_Data(cfg, d4)) {
-            queueL4CD(d4);
+            processL4CD(d4);
+            // queueL4CD(d4);
         }
     }
 
