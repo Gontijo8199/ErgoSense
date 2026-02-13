@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @author 
+ * @brief Operação de leitura e processamento de dados (ErgoSense)
+ * @version 1.0
+ * @date 2026-02-11
+*/
+
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -12,7 +20,6 @@
 #include "utils/time_sync.h"
 
 // MUX
-
 #define TCA1_ADDR           0x70
 #define TCA2_ADDR           0x71
 #define TCA_RST             12
@@ -55,6 +62,12 @@ VL53L5CX_ResultsData Data1;
 SparkFun_VL53L5CX Sensor2;
 VL53L5CX_ResultsData Data2;
 
+/**
+* @brief Array de configuração do sensor VL53L5CX.
+* * @details Este array contém o mapeamento de hardware para cada instância 
+* do sensor, incluindo ponteiro de dados, pinos de reset,
+* canais de comunicação e endereçamentos I2C/TCA.
+*/
 SensorConfig_VL53L5CX config_VL53L5CX[] = {
     { &Sensor1, &Data1, SENSOR1_RST, SENSOR1_CHANNEL, TCA1_ADDR, SENSOR1_ADDR },
     { &Sensor2, &Data2, SENSOR2_RST, SENSOR2_CHANNEL, TCA1_ADDR, SENSOR2_ADDR }
@@ -67,7 +80,12 @@ VL53L4CD Sensor5(&Wire, SENSOR5_SHUT);
 VL53L4CD Sensor6(&Wire, SENSOR6_SHUT);
 
 
-
+/**
+* @brief Array de configuração do sensor VL53L4CD.
+* * @details Este array contém o mapeamento de hardware para cada instância 
+* do sensor, incluindo ponteiro de dados, pinos de reset,
+* canais de comunicação e endereçamentos I2C/TCA.
+*/
 SensorConfig_VL53L4CD config_VL53L4CD[] = {
     { &Sensor3, SENSOR3_SHUT, SENSOR3_CHANNEL, TCA2_ADDR, SENSOR3_ADDR },
     { &Sensor4, SENSOR4_SHUT, SENSOR4_CHANNEL, TCA2_ADDR, SENSOR4_ADDR },
@@ -76,14 +94,19 @@ SensorConfig_VL53L4CD config_VL53L4CD[] = {
 };
 
 
-
-
+/**
+* @brief Inicializa o sistema, comunicação e periféricos.
+* * @details Esta função estabelece conexão com a rede WiFi e com a Firebase do projeto, 
+* sincroniza o tempo da operação, reseta o multiplexador I2C (MUX) e realiza a 
+* varredura para inicialização dos sensores VL53L5CX e VL53L4CD.
+*/
 void setup() {
+
+    // --- Conectividade WiFi ---
     Serial.begin(115200);
     Wire.begin();
     Wire.setClock(400000);
 
-    // firebase
     Serial.println("Conectando WiFi...");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
@@ -96,6 +119,7 @@ void setup() {
     Serial.print("IP: ");
     Serial.println(WiFi.localIP());
 
+    // --- Firebase ---
     initTime();
 
     if (firebaseInit()) {
@@ -111,8 +135,10 @@ void setup() {
         Serial.println(fbdo.errorReason());
     }
 
+    // --- Hardware e Sensores ---
     ResetMUX(TCA_RST);
 
+    // Inicializa todos os sensores mapeados nos arrays de configuração
     for (auto &cfg : config_VL53L5CX)
         InitSensor_VL53L5CX(cfg, DEFAULT_RES, DEFAULT_FREQ);
 
@@ -126,7 +152,14 @@ void setup() {
    
 }
 
-
+/**
+* @brief Ciclo principal de execução do sistema.
+ * * @details Realiza a leitura cíclica de todos os sensores VL53L5CX e VL53L4CD conforme  
+ * listado em suas tabelas de configuração. Os dados lidos são processados imediatamente e, 
+ * em seguida, a função gerencia o consumo de cada uma das filas de transmissão para 
+ * garantir o envio dos dados acumulados ao Firebase respeitando o tempo de rede.
+ * @note O atraso de 200ms ao fim do loop ajuda a estabilizar as comunicações I2C e WiFi.
+ */
 void loop() {
 
     VL53L5CX_Data d5;
