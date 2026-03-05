@@ -15,7 +15,7 @@
 
 #define TCA1_ADDR           0x70
 #define TCA2_ADDR           0x71
-#define TCA_RST             12
+#define TCA_RST             27
 
 // VL53L5CX   
 #define SENSOR1_RST         13
@@ -30,19 +30,19 @@
 #define DEFAULT_FREQ        15
 
 // VL53L4CD   
-#define SENSOR3_SHUT        15
+#define SENSOR3_SHUT        25
 #define SENSOR3_ADDR        0x47
 #define SENSOR3_CHANNEL     0
 
-#define SENSOR4_SHUT        18 // 16 e 17 são reservados para o ESP
+#define SENSOR4_SHUT        26 // 16 e 17 são reservados para o ESP
 #define SENSOR4_ADDR        0x48
 #define SENSOR4_CHANNEL     1
 
-#define SENSOR5_SHUT    19
+#define SENSOR5_SHUT    32
 #define SENSOR5_ADDR    0x49
 #define SENSOR5_CHANNEL 2
 
-#define SENSOR6_SHUT    21
+#define SENSOR6_SHUT    33
 #define SENSOR6_ADDR    0x50
 #define SENSOR6_CHANNEL 3
 
@@ -75,14 +75,10 @@ SensorConfig_VL53L4CD config_VL53L4CD[] = {
     { &Sensor6, SENSOR6_SHUT, SENSOR6_CHANNEL, TCA2_ADDR, SENSOR6_ADDR }
 };
 
-
-
-
 void setup() {
     Serial.begin(115200);
-    Wire.begin();
+    Wire.begin(21, 22);
     Wire.setClock(400000);
-
     // firebase
     Serial.println("Conectando WiFi...");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -126,7 +122,6 @@ void setup() {
    
 }
 
-
 void loop() {
 
     VL53L5CX_Data d5;
@@ -152,3 +147,4 @@ void loop() {
 
     delay(200);
 }
+
