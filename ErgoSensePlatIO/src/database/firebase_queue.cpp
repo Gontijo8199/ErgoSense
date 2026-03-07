@@ -7,8 +7,12 @@ static L5CX_Queue queue5;
 void queueL4CD(const VL53L4CD_Data &data) {
 
     if (queue.count >= L4CD_QUEUE_SIZE) {
-        Serial.println("Fila L4CD cheia - descartando dado");
-        return;
+
+        // sobrescreve o dado mais antigo
+        queue.head = (queue.head + 1) % L4CD_QUEUE_SIZE;
+        queue.count--;
+
+        Serial.println("Fila L4CD cheia - sobrescrevendo dado antigo");
     }
 
     queue.buffer[queue.tail] = data;
@@ -18,12 +22,13 @@ void queueL4CD(const VL53L4CD_Data &data) {
 
 void queueL5CX(const VL53L5CX_Data &data) {
 
-    //Serial.print("[QUEUE] Recebendo L5CX addr: 0x");
-    //Serial.println(data.address, HEX);
-
     if (queue5.count >= L5CX_QUEUE_SIZE) {
-        Serial.println("Fila L5CX cheia - descartando dado");
-        return;
+
+        // sobrescreve o mais antigo
+        queue5.head = (queue5.head + 1) % L5CX_QUEUE_SIZE;
+        queue5.count--;
+
+        Serial.println("Fila L5CX cheia - sobrescrevendo dado antigo");
     }
 
     queue5.buffer[queue5.tail] = data;
@@ -31,47 +36,61 @@ void queueL5CX(const VL53L5CX_Data &data) {
     queue5.count++;
 }
 
-void processL4CDQueue() {
+void processL4CDQueue()
+{
+    static unsigned long lastSend = 0;
 
-    while (queue.count > 0) {
+    if (queue.count == 0)
+        return;
 
-        VL53L4CD_Data data = queue.buffer[queue.head];
+    if (millis() - lastSend < 200)
+        return;
 
-        //Serial.print("[PROCESS] Enviando L4CD addr: 0x");
-        //Serial.println(data.address, HEX);
+    L4CD_Batch batch;
+    batch.count = 0;
 
-        sendL4CDtoFirebase(data);
+    while (queue.count > 0 && batch.count < L4CD_BATCH_SIZE)
+    {
+        batch.items[batch.count] = queue.buffer[queue.head];
 
         queue.head = (queue.head + 1) % L4CD_QUEUE_SIZE;
         queue.count--;
+
+        batch.count++;
     }
+
+    bool ok = sendL4CDBatchToFirebase(batch);
+
+    if (ok)
+        lastSend = millis();
 }
 
 void processL5CXQueue() {
 
     static unsigned long lastSend = 0;
 
-    while (queue5.count > 0) {
+    if (queue5.count == 0)
+        return;
 
-        if (millis() - lastSend < 300)
-            return;
+    if (millis() - lastSend < 500)
+        return;
 
-        VL53L5CX_Data data = queue5.buffer[queue5.head];
+    L5CX_Batch batch;
 
-        //Serial.print("[PROCESS] Enviando L5CX addr: 0x");
-        //Serial.println(data.address, HEX);
+    while (queue5.count > 0 && batch.count < L5CX_BATCH_SIZE) {
 
-        bool ok = sendL5CXtoFirebase(data);
-
-        Serial.print("[RESULT] ");
-        Serial.println(ok ? "OK" : "FALHOU");
-
-        if (!ok)
-            break;
-
-        lastSend = millis();
+        batch.items[batch.count] = queue5.buffer[queue5.head];
 
         queue5.head = (queue5.head + 1) % L5CX_QUEUE_SIZE;
         queue5.count--;
+
+        batch.count++;
     }
+
+    bool ok = sendL5CXBatchToFirebase(batch);
+
+    if (!ok)
+        return;
+
+    lastSend = millis();
 }
