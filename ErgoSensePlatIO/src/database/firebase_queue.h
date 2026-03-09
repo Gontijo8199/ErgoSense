@@ -4,7 +4,7 @@
 #include "../sensors/vl53l4cd.h"
 #include "../sensors/vl53l5cx.h"
 
-#define L4CD_QUEUE_SIZE 100
+#define L4CD_QUEUE_SIZE 500
 #define L5CX_QUEUE_SIZE 300
 
 struct L4CD_Queue {

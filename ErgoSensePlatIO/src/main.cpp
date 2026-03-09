@@ -84,7 +84,7 @@ void setup()
     Serial.begin(115200);
 
     Wire.begin(21,22);
-    Wire.setClock(800000);
+    Wire.setClock(40000);
     Wire.setTimeout(20);
 
 

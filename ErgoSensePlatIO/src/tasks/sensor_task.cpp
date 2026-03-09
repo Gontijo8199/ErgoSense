@@ -36,7 +36,7 @@ void resetI2C()
     delay(50);
 
     Wire.begin(21,22);
-    Wire.setClock(800000);
+    Wire.setClock(40000);
     Wire.setTimeout(20);
 }
 

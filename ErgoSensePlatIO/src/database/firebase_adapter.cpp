@@ -69,7 +69,7 @@ bool sendL4CDBatchToFirebase(const L4CD_Batch &batch)
     json.set("dist", distArr);
 
     char path[64];
-    snprintf(path, sizeof(path), "/l4cd_batch/%lu", ts);
+    snprintf(path, sizeof(path), "/devices/l4cd_batch/%lu", ts);
 
     return Firebase.RTDB.setJSON(&fbdo, path, &json);
 }
@@ -101,5 +101,5 @@ bool sendL5CXBatchToFirebase(const L5CX_Batch &batch) {
 
     root.set("frames", frames);
 
-    return Firebase.RTDB.pushJSON(&fbdo, "/l5cx_batch", &root);
+    return Firebase.RTDB.pushJSON(&fbdo, "/devices/l5cx_batch", &root);
 }
