@@ -48,4 +48,4 @@
 .vscode/ipch/
 
 ErgoSensePlatIO/src/database/credentials.h
-ErgoSensePlatIO/py/chave.json
+python/chave.json

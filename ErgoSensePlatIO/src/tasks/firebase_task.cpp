@@ -5,13 +5,15 @@
 
 void firebaseTask(void *pvParameters)
 {
+    esp_task_wdt_add(NULL);
+
     while (true)
     {
         esp_task_wdt_reset();
-        
+
         processL4CDQueue();
         processL5CXQueue();
 
-        vTaskDelay(pdMS_TO_TICKS(10));  
+        vTaskDelay(pdMS_TO_TICKS(20));
     }
 }
