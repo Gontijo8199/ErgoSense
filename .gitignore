@@ -48,4 +48,7 @@
 .vscode/ipch/
 
 ErgoSensePlatIO/src/database/credentials.h
+ErgoSensePlatIO/.vscode/
+ErgoSensePlatIO/.gitignore
+ErgoSensePlatIO/.pio/
 python/chave.json
