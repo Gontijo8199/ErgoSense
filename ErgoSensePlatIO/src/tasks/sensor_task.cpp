@@ -3,12 +3,12 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "../sensors/vl53l5cx.h"
-#include "../sensors/vl53l4cd.h"
-#include "../processing/sensor_processor.h"
-#include "../utils/mux.h"
+#include "vl53l5cx.h"
+#include "vl53l4cd.h"
+#include "sensor_processor.h"
+#include "mux.h"
 
-#include "../config/system_config.h"
+#include "system_config.h"
 #include "esp_task_wdt.h"
 
 // arrays definidos na main

@@ -1,6 +1,6 @@
 #include "firebase_task.h"
 
-#include "../database/firebase_queue.h"
+#include "firebase_queue.h"
 #include "esp_task_wdt.h"
 
 void firebaseTask(void *pvParameters)

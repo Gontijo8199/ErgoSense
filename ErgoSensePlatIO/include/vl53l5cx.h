@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 #include <SparkFun_VL53L5CX_Library.h>
-#include "../utils/mux.h"
+#include "mux.h"
 
 struct SensorConfig_VL53L5CX {
 

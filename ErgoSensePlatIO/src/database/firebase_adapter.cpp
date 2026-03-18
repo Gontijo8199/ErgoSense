@@ -1,6 +1,6 @@
 #include "firebase_adapter.h"
 #include "firebase.h"
-#include "../utils/time_sync.h"
+#include "time_sync.h"
 
 bool sendL4CDBatchToFirebase(const L4CD_Batch &batch)
 {

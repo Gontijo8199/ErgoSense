@@ -47,7 +47,8 @@
 .vscode/launch.json
 .vscode/ipch/
 
-ErgoSensePlatIO/src/database/credentials.h
+#ErgoSensePlatIO
+ErgoSensePlatIO/include/credentials.h
 ErgoSensePlatIO/.vscode/
 ErgoSensePlatIO/.gitignore
 ErgoSensePlatIO/.pio/

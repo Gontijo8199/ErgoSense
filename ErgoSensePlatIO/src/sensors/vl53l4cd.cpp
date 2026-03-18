@@ -1,5 +1,5 @@
 #include "vl53l4cd.h"
-#include "utils/time_sync.h"
+#include "time_sync.h"
 
 void InitSensor_VL53L4CD(SensorConfig_VL53L4CD &cfg) {
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Arduino.h>
-#include "../sensors/vl53l4cd.h"
-#include "../sensors/vl53l5cx.h"
+#include "vl53l4cd.h"
+#include "vl53l5cx.h"
 #include "firebase_queue.h"
 
 

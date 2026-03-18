@@ -1,5 +1,5 @@
 #include "vl53l5cx.h"
-#include "utils/time_sync.h"
+#include "time_sync.h"
 
 void InternalReset_L5CX(uint8_t rstPin) {
 

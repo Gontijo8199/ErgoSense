@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 #include <vl53l4cd_class.h>
-#include "../utils/mux.h"
+#include "mux.h"
 
 struct SensorConfig_VL53L4CD {
     VL53L4CD* sensor;

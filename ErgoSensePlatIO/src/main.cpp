@@ -2,21 +2,21 @@
 #include <Wire.h>
 #include <WiFi.h>
 
-#include "utils/mux.h"
-#include "sensors/vl53l5cx.h"
-#include "sensors/vl53l4cd.h"
+#include "mux.h"
+#include "vl53l5cx.h"
+#include "vl53l4cd.h"
 
-#include "database/firebase.h"
-#include "database/credentials.h"
-#include "utils/time_sync.h"
+#include "firebase.h"
+#include "credentials.h"
+#include "time_sync.h"
 
-#include "processing/sensor_processor.h"
-#include "database/firebase_queue.h"
+#include "sensor_processor.h"
+#include "firebase_queue.h"
 
-#include "tasks/sensor_task.h"
-#include "tasks/firebase_task.h"
+#include "sensor_task.h"
+#include "firebase_task.h"
 
-#include "config/system_config.h"
+#include "system_config.h"
 #include "esp_task_wdt.h"
 
 

@@ -3,10 +3,16 @@ import firebase_admin
 from firebase_admin import credentials, db
 import pandas as pd
 import time
+import numpy as np
 
 
+experiment_code = np.random.randint(low=10000, high=99999)
 
-cred = credentials.Certificate("../chave.json")
+
+print(f"Experiment_code: {experiment_code}")
+
+cred = credentials.Certificate("../chave.json") # execute dentro da pasta pipeline_worker
+
 
 firebase_admin.initialize_app(cred, {
     "databaseURL": "https://ergosense-teste-default-rtdb.firebaseio.com"
@@ -40,7 +46,7 @@ def export_l4cd() -> None:
 
     df = pd.DataFrame(rows)
 
-    df.to_csv("dataset_l4cd.csv", mode="a", header=False, index=False)
+    df.to_csv(f"{experiment_code}/dataset_l4cd.csv", mode="a", header=False, index=False)
 
     l4_ref.delete()
 
@@ -73,7 +79,7 @@ def export_l5cx() -> None:
 
     df = pd.DataFrame(rows)
 
-    df.to_csv("dataset_l5cx.csv", mode="a", header=False, index=False)
+    df.to_csv(f"{experiment_code}/dataset_l5cx.csv", mode="a", header=False, index=False)
 
     l5_ref.delete()
 
@@ -91,5 +97,9 @@ if __name__ == "__main__":
 
             print("Erro:", e)
 
-        time.sleep(30)
+        except KeyboardInterrupt:
+            print("Encerrando...")
+
+        finally:
+            time.sleep(30)
 
