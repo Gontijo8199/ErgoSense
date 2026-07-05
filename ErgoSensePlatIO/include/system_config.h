@@ -1,8 +1,6 @@
 #pragma once
 
-extern const int NUM_L5CX;
-extern const int NUM_L4CD;
-
+// config de sensores (pinos, endereços, qtd) fica em board_config.h
 extern const int DEFAULT_RES;
 extern const int DEFAULT_FREQ;
 

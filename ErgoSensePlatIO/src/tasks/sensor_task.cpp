@@ -8,19 +8,9 @@
 #include "sensor_processor.h"
 #include "mux.h"
 
+#include "board_config.h"
 #include "system_config.h"
 #include "esp_task_wdt.h"
-
-// arrays definidos na main
-extern SensorConfig_VL53L5CX config_VL53L5CX[];
-extern SensorConfig_VL53L4CD config_VL53L4CD[];
-
-extern const int NUM_L5CX;
-extern const int NUM_L4CD;
-
-extern const int DEFAULT_RES;
-extern const int DEFAULT_FREQ;
-extern const int TCA_RST;
 
 #define SENSOR_FAIL_LIMIT 10
 

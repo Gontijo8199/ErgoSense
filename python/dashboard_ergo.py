@@ -120,7 +120,7 @@ class SensorReplayDashboard:
 
                     plot["obj"].set_array(matrix)
 
-                except:
+                except ValueError:
                     pass
 
             elif info['type'] == 'circle':
@@ -214,7 +214,7 @@ class SensorReplayDashboard:
 
         print("Iniciando replay...")
 
-        anim = FuncAnimation(
+        self.anim = FuncAnimation(
             self.fig,
             self.update_frame,
             interval=200,
